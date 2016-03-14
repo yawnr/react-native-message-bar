@@ -29,9 +29,6 @@
     "type": "git",
     "url": "git@github.com:KBLNY/react-native-message-bar.git"
   },
-  "dependencies": {
-    "react-native": "^0.17.0"
-  },
   "keywords": [
     "react-native",
     "react",
