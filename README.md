@@ -3,11 +3,14 @@ A message bar notification component displayed at the top of the screen for Reac
 
 Requires react-native >= 0.17
 
- ![Screenshot](http://s17.postimg.org/pb540h733/image.png)
- ![Screenshot](http://s15.postimg.org/auad1m2bv/image.png)
- ![Screenshot](http://s28.postimg.org/nk7aa5ewt/image.png)
+![Screenshot](http://s15.postimg.org/auad1m2bv/image.png)
 
- 
+
+## Installation
+
+run `npm install react-native-message-bar --save`
+
+
 ## Usage
 
 - 1. Import `react-native-message-bar`
@@ -55,7 +58,7 @@ The normal `duration` of the notification is 3 seconds (3000 ms), you can overri
 
 ## Examples
 
-- See an full Example in `index.ios.js` or `index.android.js`.
+- See a full Example in `index.ios.js` or `index.android.js`.
 
 
 ## TODOS
