@@ -1,11 +1,7 @@
 # react-native-message-bar
-[![npm version]](https://npmjs.org/package/react-native-message-bar "View this project on npm")
-[![npm downloads]](https://npmjs.org/package/react-native-message-bar "View this project on npm")
-[![npm licence]](https://npmjs.org/package/react-native-message-bar "View this project on npm")
-
 A message bar notification component displayed at the top of the screen for React Native (Android and iOS) projects.
 
-![Screenshot](http://s15.postimg.org/auad1m2bv/image.png)
+![Screenshot](http://s9.postimg.org/tljtdt4vz/ezgif_2193135790.gif)
 
 
 ## Content
@@ -33,16 +29,18 @@ A message bar notification component displayed at the top of the screen for Reac
 
 ## Installation
 Make sure that you are in your React Native project directory and run:
-`$ npm install react-native-message-bar --save`
+```batch
+$ npm install react-native-message-bar --save
+```
 
 
 ## Basic Usage
-1. Import the `react-native-message-bar` package
+- 1. Import the `react-native-message-bar` package
 ```javascript
 var MessageBarAlert = require('react-native-message-bar');
 ```
 
-2. Add the `MessageBarAlert` to your render method
+- 2. Add the `MessageBarAlert` to your render method
 ```javascript
 // Within your render function.
 // Include the MessageBar once within your top View element
@@ -54,7 +52,7 @@ var MessageBarAlert = require('react-native-message-bar');
 />
 ```
 
-3. Display the Message Bar Alert on demand
+- 3. Display the Message Bar Alert on demand
 ```javascript
 // Simple show the alert by its reference
 this.refs.alert.showMessageBarAlert();
@@ -80,7 +78,7 @@ The 4 pre-configured alert styles are:
 - `success` defined green colors
 - `warning` defined orange colors
 - `error` defined red colors
-The `extra` alert type allows you to use another 5th type.
+- The `extra` alert type allows you to use another 5th type.
 
 ```javascript
 <MessageBarAlert ref="alert"
@@ -142,29 +140,29 @@ You can customize the inset (padding) and the offset of the alert.
 
 
 ## Properties
-Prop                  | Type     | Default  | Description
---------------------- | -------- | -------- | -----------
-title                 | String   |          | Title of the alert
-message               | String   |          | Message of the alert
-avatarUrl             | String   |          | Avatar/Icon URL of the alert
-type                  | String   | info     | Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable).
-duration              | Number   | 3000     | Number of ms the alert is displayed  
-onTapped              | Function |          | Callback function after alert is tapped
-onShow                | Function |          | Callback function after alert is shown
-onHide                | Function |          | Callback function after alert is hidden
+Prop                  | Type     | Default              | Description
+--------------------- | -------- | -------------------- | -----------
+title                 | String   |                      | Title of the alert
+message               | String   |                      | Message of the alert
+avatarUrl             | String   |                      | Avatar/Icon URL of the alert
+type                  | String   | info                 | Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable).
+duration              | Number   | 3000                 | Number of ms the alert is displayed  
+onTapped              | Function |                      | Callback function after alert is tapped
+onShow                | Function |                      | Callback function after alert is shown
+onHide                | Function |                      | Callback function after alert is hidden
 stylesheetInfo        | Object   | { backgroundColor: '#007bff', strokeColor: '#006acd' } | Background color and line stroke colors of the alert when type is equals to `info`
 stylesheetSuccess     | Object   | { backgroundColor: 'darkgreen', strokeColor: '#b40000' } | Background color and line stroke colors of the alert when type is equals to `success`
 stylesheetWarning     | Object   | { backgroundColor: '#ff9c00', strokeColor: '#f29400' } | Background color and line stroke colors of the alert when type is equals to `warning`
 stylesheetError       | Object   | { backgroundColor: '#ff3232', strokeColor: '#FF0000' } | Background color and line stroke colors of the alert when type is equals to `error`
 stylesheetExtra       | Object   | { backgroundColor: '#007bff', strokeColor: '#006acd' } | Background color and line stroke colors of the alert when type is equals to `extra`
-durationToShow        | Number   | 350      | Duration of the animation to completely show the alert
-durationToHide        | Number   | 350      | Duration of the animation to completely hide the alert
-viewTopOffset         | Number   | 0        | Offset of the view from the top. That means the alert touch the top edge of the screen
-viewLeftOffset        | Number   | 0        | Offset of the view from the left. That means the alert touch the left edge of the screen
-viewRightOffset       | Number   | 0        | Offset of the view from the right. That means the alert touch the right edge of the screen
-viewTopInset          | Number   | 0        | Padding Top of the view
-viewLeftInset         | Number   | 0        | Padding Left of the view
-viewRightInset        | Number   | 0        | Padding Right of the view
+durationToShow        | Number   | 350                  | Duration of the animation to completely show the alert
+durationToHide        | Number   | 350                  | Duration of the animation to completely hide the alert
+viewTopOffset         | Number   | 0                    | Offset of the view from the top. That means the alert touch the top edge of the screen
+viewLeftOffset        | Number   | 0                    | Offset of the view from the left. That means the alert touch the left edge of the screen
+viewRightOffset       | Number   | 0                    | Offset of the view from the right. That means the alert touch the right edge of the screen
+viewTopInset          | Number   | 0                    | Padding Top of the view
+viewLeftInset         | Number   | 0                    | Padding Left of the view
+viewRightInset        | Number   | 0                    | Padding Right of the view
 avatarStyle           | Style    | { height: 40, width: 40, borderRadius: 20, alignSelf: 'center' } | Style of the icon/avatar
 titleStyle            | Style    | { color: 'white', fontSize: 18, fontWeight: 'bold' } | Style of the title
 messageStyle          | Style    | { color: 'white', fontSize: 16 } | Style of the message
