@@ -37,7 +37,8 @@ $ npm install react-native-message-bar --save
 ## Basic Usage
 - 1. Import the `react-native-message-bar` package
 ```javascript
-var MessageBarAlert = require('react-native-message-bar');
+var MessageBar = require('react-native-message-bar').MessageBar;
+var MessageBarManager = require('react-native-message-bar').MessageBarManager;
 ```
 
 - 2. Add the `MessageBarAlert` to your render method
@@ -56,17 +57,29 @@ var MessageBarAlert = require('react-native-message-bar');
 ```javascript
 // Simple show the alert by its reference
 this.refs.alert.showMessageBarAlert();
+
+// OR
+
+// Preferably use this method. In a future release a queuing system will be implemented
+MessageBarManager.showAlert(this.refs.alert);
 ```
 Please note, if you do not provide a `type`, the `info` one will be chosen for you.
+
 The normal `duration` of the notification is 3 seconds (3000 ms), you can override it. After this time, the notification is going to be hidden
 
-- See a full Example in `index.ios.js` or `index.android.js`.
+
+See a full Example in `index.ios.js` or `index.android.js`.
 
 
 ## Hide the Message Bar Alert
 ```javascript
-// Simple hide the alert by its reference
+// Simply hide the alert by its reference
 this.refs.alert.hideMessageBarAlert();
+
+// OR
+
+// You can force the current alert to be hidden through the Manager
+MessageBarManager.hideAlert();
 ```
 
 
@@ -78,7 +91,8 @@ The 4 pre-configured alert styles are:
 - `success` defined green colors
 - `warning` defined orange colors
 - `error` defined red colors
-- The `extra` alert type allows you to use another 5th type.
+
+The `extra` alert type allows you to use another 5th type.
 
 ```javascript
 <MessageBarAlert ref="alert"

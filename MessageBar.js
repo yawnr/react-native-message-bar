@@ -28,6 +28,7 @@ class MessageBar extends Component {
 
     this.animatedValue = new Animated.Value(0);
     this.notifyAlertHiddenCallback = null;
+    this.alertShown = false;
 
     this.state = this.setStateByProps(props);
   }
@@ -42,7 +43,6 @@ class MessageBar extends Component {
 
   setStateByProps(props) {
     return {
-      alertShown: false,
       backgroundColor: '#007bff', // default value : blue
       strokeColor: '#006acd', // default value : blue
 
@@ -87,14 +87,12 @@ class MessageBar extends Component {
   */
   showMessageBarAlert() {
     // If an alert is already shonw or doesn't have a title or a message, do nothing
-    if (this.state.alertShown || (this.state.title == null && this.state.message == null)) {
+    if (this.alertShown || (this.state.title == null && this.state.message == null)) {
       return;
     }
 
     // Set the data of the alert in the state
-    this.setState({
-      alertShown: true,
-    });
+    this.alertShown = true;
 
     // Display the alert by animating it from the top of the screen
     // Auto-Hide it after a delay set in the state
@@ -123,7 +121,7 @@ class MessageBar extends Component {
   */
   hideMessageBarAlert() {
     // Hide the alert after a delay set in the state only if the alert is still visible
-    if (!this.state.alertShown) {
+    if (!this.alertShown) {
       return;
     }
 
@@ -137,9 +135,7 @@ class MessageBar extends Component {
 
   _hideMessageBarAlertComplete() {
     // The alert is not shown anymore
-    this.setState({
-      alertShown: false
-    });
+    this.alertShown = false;
 
     this._notifyAlertHidden();
 
