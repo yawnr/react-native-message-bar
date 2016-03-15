@@ -25,55 +25,92 @@ class MessageBar extends Component {
 
   constructor(props) {
     super(props)
-    this.animatedValue = new Animated.Value(0);
-    this.animatedXValue = new Animated.Value(-windowWidth);
 
-    this.state = {
+    this.animatedValue = new Animated.Value(0);
+    this.notifyAlertHiddenCallback = null;
+
+    this.state = this.setStateByProps(props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // Set the new state, this is triggered when the props of this MessageBar changed
+    this.setState(this.setStateByProps(nextProps));
+
+    // Apply the colors of the alert depending on its type
+    this._applyAlertStylesheet(nextProps.type);
+  }
+
+  setStateByProps(props) {
+    return {
       alertShown: false,
-      backgroundColor: '#007bff',
-      strokeColor: '#006acd',
-      title: null,
-      message: null,
-      type: 'info',
-      duration: 2000,
-      callback: null,
-    }
+      backgroundColor: '#007bff', // default value : blue
+      strokeColor: '#006acd', // default value : blue
+
+      /* Cusomisation of the alert: Title, Message, Icon URL, Alert Type (error, success, warning, info), Duration for Alert keep shown */
+      title: props.title,
+      message: props.message,
+      avatarUrl: props.avatarUrl,
+      type: props.type || 'info',
+      duration: props.duration || 3000,
+
+      /* Callbacks method on Alert Tapped, on Alert Show, on Alert Hide */
+      onTapped: props.onTapped,
+      onShow: props.onShow,
+      onHide: props.onHide,
+
+      /* Stylesheets */
+      stylesheetInfo: props.stylesheetInfo || { backgroundColor: '#007bff', strokeColor: '#006acd' }, // Default are blue colors
+      stylesheetSuccess: props.stylesheetSuccess || { backgroundColor: 'darkgreen', strokeColor: '#b40000' }, // Default are Green colors
+      stylesheetWarning: props.stylesheetWarning || { backgroundColor: '#ff9c00', strokeColor: '#f29400' }, // Default are orange colors
+      stylesheetError: props.stylesheetError || { backgroundColor: '#ff3232', strokeColor: '#FF0000' }, // Default are red colors
+      stylesheetExtra: props.stylesheetExtra || { backgroundColor: '#007bff', strokeColor: '#006acd' }, // Default are blue colors, same as info
+
+      /* Duration of the animation */
+      durationToShow: props.durationToShow || 350,
+      durationToHide: props.durationToHide || 350,
+
+      /* Offset of the View, useful if you have a navigation bar or if you want the alert be shown below another component instead of the top of the screen */
+      viewTopOffset: props.viewTopOffset || 0,
+      viewLeftOffset: props.viewLeftOffset || 0,
+      viewRightOffset: props.viewRightOffset || 0,
+
+      /* Inset of the view, useful if you want to apply a padding at your alert content */
+      viewTopInset: props.viewTopInset || 0,
+      viewLeftInset: props.viewLeftInset || 0,
+      viewRightInset: props.viewRightInset || 0,
+    };
   }
 
 
-  showMessageBarAlert(title, message, avatarUrl, type, duration, callback) {
+  /*
+  * Show the alert
+  */
+  showMessageBarAlert() {
     // If an alert is already shonw or doesn't have a title or a message, do nothing
-    if (this.state.alertShown || (title == null && message == null)) {
+    if (this.state.alertShown || (this.state.title == null && this.state.message == null)) {
       return;
     }
-
-    // Apply the colors of the alert depending on its type
-    this.applyAlertStylesheet(type);
 
     // Set the data of the alert in the state
     this.setState({
       alertShown: true,
-      title: title,
-      message: message,
-      avatarUrl: avatarUrl,
-      duration: duration == null ? 2000 : duration,
-      callback: callback
     });
 
     // Display the alert by animating it from the top of the screen
     // Auto-Hide it after a delay set in the state
     Animated.timing(this.animatedValue, {
       toValue: 1,
-      duration: 350
-    }).start(this.hideMessageBarAlertWithDelay());
+      duration: this.state.durationToShow
+    }).start(this._showMessageBarAlertComplete());
   }
 
 
-  hideMessageBarAlertWithDelay() {
-    // Hide the alert after a delay set in the state only if the alert is still visible
-    if (!this.state.alertShown) {
-      return;
-    }
+  /*
+  * Hide the alert after a delay, typically used for auto-hidding
+  */
+  _showMessageBarAlertComplete() {
+    // Execute onShow callback if any
+    this._onShow();
 
     setTimeout(() => {
       this.hideMessageBarAlert();
@@ -81,21 +118,84 @@ class MessageBar extends Component {
   }
 
 
+  /*
+  * Hide the alert, typically used when user tap the alert
+  */
   hideMessageBarAlert() {
-    // Hide the alert
+    // Hide the alert after a delay set in the state only if the alert is still visible
+    if (!this.state.alertShown) {
+      return;
+    }
+
+    // Animate the alert to hide it to the top of the screen
+    Animated.timing(this.animatedValue, {
+      toValue: 0,
+      duration: this.state.durationToHide
+    }).start(this._hideMessageBarAlertComplete());
+  }
+
+
+  _hideMessageBarAlertComplete() {
     // The alert is not shown anymore
     this.setState({
       alertShown: false
     });
 
-    // Animate the alert to hide it to the top of the screen
-    Animated.timing(this.animatedValue, {
-      toValue: 0,
-      duration: 350
-    }).start();
+    this._notifyAlertHidden();
+
+    // Execute onHide callback if any
+    this._onHide();
   }
 
-  applyAlertStylesheet(type) {
+  /*
+  * Callback executed to tell the observer the alert is hidden
+  */
+  _notifyAlertHidden() {
+    if (this.notifyAlertHiddenCallback) {
+      this.notifyAlertHiddenCallback();
+    }
+  }
+
+
+  /*
+  * Callback executed when the user tap the alert
+  */
+  _alertTapped() {
+    // Hide the alert
+    this.hideMessageBarAlert();
+
+    // Execute the callback passed in parameter
+    if (this.props.onTapped) {
+      this.props.onTapped();
+    }
+  }
+
+
+  /*
+  * Callback executed when alert is shown
+  */
+  _onShow() {
+    if (this.props.onShow) {
+      this.props.onShow();
+    }
+  }
+
+
+  /*
+  * Callback executed when alert is hidden
+  */
+  _onHide() {
+    if (this.props.onHide) {
+      this.props.onHide();
+    }
+  }
+
+
+  /*
+  * Change the background color and the line stroke color depending on the Type
+  * If the type is not recognized, the 'info' one (blue colors) is selected for you
+  */
+  _applyAlertStylesheet(type) {
     // Set the Background color and the line stroke color of the alert depending on its type
     // Set to blue-info if no type or if the type is not recognized
 
@@ -104,25 +204,24 @@ class MessageBar extends Component {
 
     switch (type) {
       case 'success':
-        backgroundColor = 'darkgreen'; // Green
-        strokeColor = '#b40000'; // Green
+        backgroundColor = this.state.stylesheetSuccess.backgroundColor;
+        strokeColor = this.state.stylesheetSuccess.strokeColor;
         break;
       case 'error':
-        backgroundColor = '#FF0000'; // Red
-        strokeColor = '#FF0000'; // Red
+        backgroundColor = this.state.stylesheetError.backgroundColor;
+        strokeColor = this.state.stylesheetError.strokeColor;
         break;
       case 'warning':
-        backgroundColor = '#ff9c00'; // Orange
-        strokeColor = '#f29400'; // Orange
+        backgroundColor = this.state.stylesheetWarning.backgroundColor;
+        strokeColor = this.state.stylesheetWarning.strokeColor;
         break;
       case 'info':
-        backgroundColor = '#007bff'; // Blue
-        strokeColor = '#006acd'; // Blue
+        backgroundColor = this.state.stylesheetInfo.backgroundColor;
+        strokeColor = this.state.stylesheetInfo.strokeColor;
         break;
       default:
-        // for now blue-info one
-        backgroundColor = '#007bff'; // Blue
-        strokeColor = '#006acd'; // Blue
+        backgroundColor = this.state.stylesheetExtra.backgroundColor;
+        strokeColor = this.state.stylesheetExtra.strokeColor;
         break;
     }
 
@@ -133,25 +232,19 @@ class MessageBar extends Component {
   }
 
 
-  alertTapped() {
-    // Hide the alert
-    this.hideMessageBarAlert();
-
-    // Execute the callback passed in parameter
-    if (this.state.callback) {
-      this.state.callback();
-    }
-  }
+  /*
+  * Alert Rendering Methods
+  */
 
   render() {
     let animation = this.animatedValue.interpolate({
        inputRange: [0, 0.3, 1],
-       outputRange: [-90, -10, 0]
+       outputRange: [-windowHeight, -windowHeight/3, 0]
      })
 
     return (
-      <Animated.View style={{ transform: [{ translateY: animation }], backgroundColor: this.state.backgroundColor, borderColor: this.state.strokeColor, borderBottomWidth: 1, position: 'absolute', top: 0, left: 0, right: 0, height: 90 }}>
-        <TouchableOpacity onPress={()=>{this.alertTapped()}} style={{ flex: 1 }}>
+      <Animated.View style={{ transform: [{ translateY: animation }], backgroundColor: this.state.backgroundColor, borderColor: this.state.strokeColor, borderBottomWidth: 1, position: 'absolute', top: this.state.viewTopOffset, left: this.state.viewLeftOffset, right: this.state.viewRightOffset, paddingTop: this.state.viewTopInset, paddingLeft: this.state.viewLeftInset, paddingRight: this.state.viewRightInset }}>
+        <TouchableOpacity onPress={()=>{this._alertTapped()}} style={{ flex: 1 }}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', padding: 10 }} >
             { this.renderImage() }
             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', marginLeft: 10 }} >

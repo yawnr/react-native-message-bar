@@ -5,7 +5,8 @@
  */
 'use strict';
 
-var MessageBarAlert = require('./MessageBar.js');
+var MessageBarAlert = require('react-native-message-bar');
+var MessageBarManager = require('./rn_ressources/ios/utilities/MessageBarManager.js');
 
 import React, {
   AppRegistry,
@@ -24,106 +25,197 @@ class MessageBar extends Component {
     super(props)
 
     this.state = {
-      callbackButton: 'Show Alert with Avatar and Callback (Warning Type)',
+      callbackButton: 'Show Alert with Avatar and Callback (Error Type)',
+
+      alertTitle: 'null',
+      alertMessage: null,
+      alertIconUrl: null,
+      alertType: 'info',
+      alertDuration: null,
+      alertCallback: null,
     }
   }
 
-  showSimpleAlert(type) {
-    // Title or Message is at least Mandatory
-    // type is Mandatory too
 
-    this.refs.alert.showMessageBarAlert("This is a simple alert", // Title of the alert
-      null, // Message of the alert
-      null, // Avatar of the alert
-      'success', // you can select one of 'success', 'error', 'warning', 'error'
-      null, // The alert is displayed for 10 seconds, instead of 3
-      null // This function is executed on alert tap
-    );
+  showSimpleAlertMessage() {
+    // Title or Message is at least Mandatory
+    // type is Mandatory too, otherwise 'info' (blue color) will picked for you
+    this.setState({
+      alertTitle: null,
+      alertMessage: "This is a simple alert with a message.",
+      alertIconUrl: null,
+      alertType: 'extra',
+      alertDuration: null,
+      alertCallback: null,
+    });
+
+    // Simple show the alert by its reference
+    // this.refs.alert.showMessageBarAlert();
+
+    // Or with the manager
+    MessageBarManager.showAlert(this.refs.alert);
+  }
+
+  showSimpleAlert() {
+    // Title or Message is at least Mandatory
+    // type is Mandatory too, otherwise 'info' (blue color) will picked for you
+    this.setState({
+      alertTitle: "This is a simple alert",
+      alertMessage: null,
+      alertIconUrl: null,
+      alertType: 'success',
+      alertDuration: null,
+      alertCallback: null,
+    });
+
+    // Simple show the alert by its reference
+    // this.refs.alert.showMessageBarAlert();
+
+    // Or with the manager
+    MessageBarManager.showAlert(this.refs.alert);
   }
 
   showSimpleAlertWithMessage() {
     // Title or Message is at least Mandatory
-    // type is Mandatory too
+    // type is Mandatory too, otherwise 'info' (blue color) will picked for you
+    this.setState({
+      alertTitle: "Caution !",
+      alertMessage: "This is a simple alert with a title",
+      alertIconUrl: null,
+      alertType: 'warning',
+      alertDuration: null,
+      alertCallback: null,
+    });
 
-    this.refs.alert.showMessageBarAlert(null, // Title of the alert
-      "This is a simple alert with a message instead of title", // Message of the alert
-      null, // Avatar of the alert
-      'info', // you can select one of 'success', 'error', 'warning', 'error'
-      null, // The alert is displayed for 10 seconds, instead of 3
-      null // This function is executed on alert tap
-    );
+    // Simple show the alert by its reference
+    // this.refs.alert.showMessageBarAlert();
+
+    // Or with the manager
+    MessageBarManager.showAlert(this.refs.alert);
   }
 
   showAlertWithAvatar() {
-    this.refs.alert.showMessageBarAlert("This is an alert with an avatar", // Title of the alert
-      "You can customise the title, message text and avatar", // Message of the alert
-      "http://www.icon100.com/up/4250/128/83-circle-error.png", // Avatar of the alert
-      'error', // you can select one of 'success', 'error', 'warning', 'error'
-      null, // The alert is displayed for 10 seconds, instead of 3
-      null // This function is executed on alert tap
-    );
+    this.setState({
+      alertTitle: "John Doe",
+      alertMessage: "Hello, how are you?",
+      alertIconUrl: "https://image.freepik.com/free-icon/super-simple-avatar_318-1018.jpg",
+      alertType: 'info',
+      alertDuration: null,
+      alertCallback: null,
+    });
+
+    // Simple show the alert by its reference
+    // this.refs.alert.showMessageBarAlert();
+
+    // Or with the manager
+    MessageBarManager.showAlert(this.refs.alert);
   }
 
   showAlertWithCallback() {
-    this.refs.alert.showMessageBarAlert("This is an alert with a callback function", // Title of the alert
-      "Tap on the alert to execute the callback you passed in parameter", // Message of the alert
-      "http://www.icon100.com/up/4250/128/83-circle-error.png", // Avatar of the alert
-      'warning', // you can select one of 'success', 'error', 'warning', 'error'
-      10000, // The alert is displayed for 10 seconds, instead of 3
-      ()=>{this.customCallback()} // This function is executed on alert tap
-    );
+    this.setState({
+      alertTitle: "This is an alert with a callback function",
+      alertMessage: "Tap on the alert to execute the callback you passed in parameter",
+      alertIconUrl: "http://www.icon100.com/up/4250/128/83-circle-error.png",
+      alertType: 'error',
+      alertDuration: 10000,
+      alertCallback: this.customCallback.bind(this),
+    });
+
+    // Simple show the alert by its reference
+    // this.refs.alert.showMessageBarAlert();
+
+    // Or with the manager
+    MessageBarManager.showAlert(this.refs.alert);
   }
 
   customCallback() {
+    console.log('Alert Tapped. Triggered as a callback');
+
     this.setState({
-      callbackButton: 'Callback executed!'
+      callbackButton: 'Alert Tapped. Triggered as a callback',
     });
   }
 
   hideCurrentAlert() {
     // Hide the current alert bar
-    this.refs.alert.hideMessageBarAlert();
+    MessageBarManager.hideAlert();
   }
 
+
+  alertShow() {
+    console.log('Alert is shown. Triggered as a callback');
+  }
+
+  alertHide() {
+    console.log('Alert is now hidden. Triggered as a callback');
+  }
 
   render() {
     return (
       <View style={styles.container}>
 
         <MessageBarAlert ref="alert"
-          titleStyle={{color: 'black', fontSize: 18, fontWeight: 'bold'}}
-          messageStyle={{ color: 'white', fontSize: 16 }}
-          avatarStyle={{height: 40, width: 40, borderRadius: 20, alignSelf: 'center'}} />
+          /* Cusomisation of the alert: Title, Message, Icon URL, Alert Type (error, success, warning, info), Duration for Alert keep shown */
+          title={this.state.alertTitle} // Title of the alert
+          message={this.state.alertMessage} // Message of the alert
+          avatarUrl={this.state.alertIconUrl} // Avatar/Icon URL of the alert
+          type={this.state.alertType} // Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable). Default is 'info'
+          duration={this.state.alertDuration} // Number of ms the alert is displayed. Default is 3000 ms (3 seconds)
 
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+          /* Callbacks method on Alert Tapped, on Alert Show, on Alert Hide */
+          onTapped={this.state.alertCallback} // This function is executed on alert tap
+          onShow={this.alertShow.bind(this)} // This function is executed when alert is shown
+          onHide={this.alertHide.bind(this)} // This function is executed when alert is hidden
+
+          /* Customize the stylesheets and/or provide an additional one 'extra' */
+          stylesheetInfo = {{ backgroundColor : '#007bff', strokeColor : '#006acd' }}// Default are blue colors
+          stylesheetSuccess = {{ backgroundColor : 'darkgreen', strokeColor : '#b40000' }} // Default are Green colors
+          stylesheetWarning = {{ backgroundColor : '#ff9c00', strokeColor : '#f29400' }} // Default are orange colors
+          stylesheetError = {{ backgroundColor : '#ff3232', strokeColor : '#FF0000' }} // Default are red colors
+          stylesheetExtra = {{ backgroundColor : 'black', strokeColor : 'gray' }} // Default are blue colors, same as info
+
+          /* Customize the duration of the animation */
+          durationToShow = {500} // Default is 350
+          durationToHide = {300} // Default is 350
+
+          /* Offset of the View, useful if you have a navigation bar or if you want the alert be shown below another component instead of the top of the screen */
+          viewTopOffset = {0} // Default is 0
+          viewLeftOffset = {0} // Default is 0
+          viewRightOffset = {0} // Default is 0
+
+          /* Inset of the view, useful if you want to apply a padding at your alert content */
+          viewTopInset = {15} // Default is 0
+          viewLeftInset = {0} // Default is 0
+          viewRightInset = {0} // Default is 0
+
+          /* Style for the text elements and the  */
+          titleStyle={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}
+          messageStyle={{ color: 'white', fontSize: 16 }}
+          avatarStyle={{ height: 40, width: 40, borderRadius: 20 }}
+        />
+
+        <TouchableOpacity style={styles.buttonContainer} onPress={()=>{this.showSimpleAlertMessage()}}>
+          <Text style={[styles.button, {backgroundColor: 'black'}]}>Show Simple Alert, message only (Extra StyleSheet Type)</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity style={styles.buttonContainer} onPress={()=>{this.showSimpleAlert()}}>
-          <Text style={styles.button}>Show Simple Alert (Success Type)</Text>
+          <Text style={[styles.button, {backgroundColor: 'darkgreen'}]}>Show Simple Alert, title only (Success Type)</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.buttonContainer} onPress={()=>{this.showSimpleAlertWithMessage()}}>
-          <Text style={styles.button}>Show Simple Alert with Message (Info Type)</Text>
+          <Text style={[styles.button, {backgroundColor: '#ff9c00'}]}>Show Simple Alert with Message (Warning Type)</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.buttonContainer} onPress={()=>{this.showAlertWithAvatar()}}>
-          <Text style={styles.button}>Show Alert with Avatar (Error Type)</Text>
+          <Text style={[styles.button, {backgroundColor: '#007bff'}]}>Show Alert with Avatar (Info Type)</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.buttonContainer} onPress={()=>{this.showAlertWithCallback()}}>
-          <Text style={styles.button}> {this.state.callbackButton} </Text>
+          <Text style={[styles.button, {backgroundColor: '#ff3232'}]}> {this.state.callbackButton} </Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.buttonContainer} onPress={()=>{this.hideCurrentAlert()}}>
-          <Text style={styles.button}>Hide Current Alert</Text>
+          <Text style={[styles.button, {backgroundColor: 'darkgray'}]}>Hide Current Alert</Text>
         </TouchableOpacity>
 
       </View>

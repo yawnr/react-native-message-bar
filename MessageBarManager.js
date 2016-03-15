@@ -1,0 +1,75 @@
+/**
+ * Name: Message Bar Manager
+ * Description: A manager to show/hide and handle a queue of alerts
+ * https://github.com/KBLNY/react-native-message-bar
+ */
+'use strict';
+
+module.exports = {
+	_currentMessageBarAlert: null,
+	_messageAlerts: new Array(),
+
+	setCurrentMessageBarAlert: function(alert) {
+		this._currentMessageBarAlert = alert;
+	},
+
+	getCurrentMessageBarAlert: function() {
+		return this._currentMessageBarAlert;
+	},
+
+
+	showAlert: function(alert) {
+		if (alert !== null) {
+			this.hideAlert();
+
+			this.setCurrentMessageBarAlert(alert);
+
+			this._currentMessageBarAlert.showMessageBarAlert();
+		}
+	},
+
+
+	hideAlert: function() {
+	  if (this._currentMessageBarAlert !== null) {
+	    this._currentMessageBarAlert.hideMessageBarAlert();
+	  }
+	},
+
+
+	// TODO Implement Queue Alert system
+	// showCurrentAlert: function() {
+  //   if (this._currentMessageBarAlert !== null) {
+	// 	  this._currentMessageBarAlert.showMessageBarAlert();
+	// 	}
+	// },
+	//
+  //
+	//
+	//
+	// addAlert: function(alert){
+	// 	// Add the MessageBar alert to the queue
+	// 	this._messageAlerts.push(alert);
+	//
+	// 	this.showAlert();
+	// },
+	//
+	// showAlert: function() {
+	// 	if (this._currentMessageBarAlert === null) {
+	// 		var alertToShow = this._messageAlerts.shift();
+	//
+	// 		if (alertToShow) {
+	// 			alertToShow.notifyAlertHiddenCallback = ()=>{
+	// 				this._currentMessageBarAlert = null;
+	//
+	// 				this.showAlert();
+	// 			}
+	//
+	// 			this.setCurrentMessageBarAlert(alertToShow);
+	//
+	// 			this.showCurrentAlert();
+	// 		}
+	// 	}
+	// },
+
+
+}
