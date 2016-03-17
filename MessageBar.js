@@ -53,6 +53,10 @@ class MessageBar extends Component {
       type: props.type || 'info',
       duration: props.duration || 3000,
 
+      /* Hide setters */
+      shouldHideAfterDelay: (props.shouldHideAfterDelay == undefined) ? true : props.shouldHideAfterDelay,
+      shouldHideOnTap: (props.shouldHideOnTap == undefined) ? true : props.shouldHideOnTap,
+
       /* Callbacks method on Alert Tapped, on Alert Show, on Alert Hide */
       onTapped: props.onTapped,
       onShow: props.onShow,
@@ -78,6 +82,16 @@ class MessageBar extends Component {
       viewTopInset: props.viewTopInset || 0,
       viewLeftInset: props.viewLeftInset || 0,
       viewRightInset: props.viewRightInset || 0,
+
+      /* Number of Lines for Title and Message */
+      titleNumberOfLines: (props.titleNumberOfLines == undefined) ? 1 : props.titleNumberOfLines,
+      messageNumberOfLines: (props.messageNumberOfLines == undefined) ? 2 : props.messageNumberOfLines,
+
+      /* Style for the text elements and the avatar */
+      titleStyle: props.titleStyle || { color: 'white', fontSize: 18, fontWeight: 'bold' },
+      messageStyle: props.messageStyle || { color: 'white', fontSize: 16 },
+      avatarStyle: props.avatarStyle || { height: 40, width: 40, borderRadius: 20 },
+
     };
   }
 
@@ -110,9 +124,20 @@ class MessageBar extends Component {
     // Execute onShow callback if any
     this._onShow();
 
-    setTimeout(() => {
-      this.hideMessageBarAlert();
-    }, this.state.duration);
+    // If the duration is null, do not hide the
+    if (this.state.shouldHideAfterDelay) {
+      setTimeout(() => {
+        this.hideMessageBarAlert();
+      }, this.state.duration);
+    }
+  }
+
+
+  /*
+  * Return true if the MessageBar is currently displayed, otherwise false
+  */
+  isMessageBarShown() {
+    return this.alertShown;
   }
 
 
@@ -158,7 +183,9 @@ class MessageBar extends Component {
   */
   _alertTapped() {
     // Hide the alert
-    this.hideMessageBarAlert();
+    if (this.state.shouldHideOnTap) {
+      this.hideMessageBarAlert();
+    }
 
     // Execute the callback passed in parameter
     if (this.props.onTapped) {
@@ -243,7 +270,7 @@ class MessageBar extends Component {
         <TouchableOpacity onPress={()=>{this._alertTapped()}} style={{ flex: 1 }}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', padding: 10 }} >
             { this.renderImage() }
-            <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', marginLeft: 10 }} >
+            <View style={{ flex: 1, flexDirection: 'column', alignSelf: 'stretch', justifyContent: 'center', marginLeft: 10 }} >
               { this.renderTitle() }
               { this.renderMessage() }
             </View>
@@ -255,20 +282,16 @@ class MessageBar extends Component {
 
   renderImage() {
     if (this.state.avatarUrl != null) {
-      const avatarStyle = this.props.avatarStyle !== undefined ? this.props.avatarStyle : { height: 40, width: 40, borderRadius: 20, alignSelf: 'center' };
-
       return (
-        <Image source={{ uri: this.state.avatarUrl }} style={avatarStyle} />
+        <Image source={{ uri: this.state.avatarUrl }} style={this.state.avatarStyle} />
       );
     }
   }
 
   renderTitle() {
     if (this.state.title != null) {
-      const titleStyle = this.props.titleStyle !== undefined ? this.props.titleStyle : { color: 'white', fontSize: 18, fontWeight: 'bold' };
-
       return (
-        <Text numberOfLines={1} style={titleStyle}>
+        <Text numberOfLines={this.state.titleNumberOfLines} style={this.state.titleStyle}>
           { this.state.title }
         </Text>
       );
@@ -277,10 +300,8 @@ class MessageBar extends Component {
 
   renderMessage() {
     if (this.state.message != null) {
-      const messageStyle = this.props.messageStyle !== undefined ? this.props.messageStyle : { color: 'white', fontSize: 16 };
-
       return (
-        <Text numberOfLines={2} style={messageStyle}>
+        <Text numberOfLines={this.state.messageNumberOfLines} style={this.state.messageStyle}>
           { this.state.message }
         </Text>
       );

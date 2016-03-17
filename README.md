@@ -1,7 +1,7 @@
 # react-native-message-bar
 A message bar notification component displayed at the top of the screen for React Native (Android and iOS) projects.
 
-![Screenshot](http://s9.postimg.org/tljtdt4vz/ezgif_2193135790.gif)
+![Screenshot](http://s18.postimg.org/fz4t9ifkp/ezgif_942641418.gif)
 
 
 ## Content
@@ -17,11 +17,12 @@ A message bar notification component displayed at the top of the screen for Reac
 
 
 ## Features
+- Android and iOS capable
 - Animated alert with Title, Message and Icon
-- Auto-hide after 3 seconds
+- Auto-hide after x seconds (customizable)
 - Support hide on tap
 - 4 pre-configured customizable styles + 1 extra
-- Customizable style and animation
+- Customizable styles and animation
 - Callbacks on alert show, hide and tap
 - Orientation supported
 - Children component support Show/Hide alert
@@ -45,23 +46,44 @@ var MessageBarManager = require('react-native-message-bar').MessageBarManager;
 ```javascript
 // Within your render function.
 // Include the MessageBar once within your top View element
+// Please provide, at least a `title` or a `message` and a `type` (otherwise `info` will be chosen by default)
 <MessageBarAlert ref="alert"
   title="John Doe" // Title of the alert
   message="Hello, any suggestions?" // Message of the alert
   avatarUrl="<URL of your icon/avatar>" // Avatar/Icon URL of the alert
   type="info" // Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable). Default is 'info'
+
+  // See Properties section for full customization
+  // Or check `index.ios.js` or `index.android.js` for a complete example
 />
 ```
 
-- 3. Display the Message Bar Alert on demand
+- 3. Register and Release your Message Bar as the current main alert
+```javascript
+componentDidMount() {
+  // Register the alert located on this master page
+  // This MessageBar will be accessible from the current (same) component, and from its child component
+  // The MessageBar is then declared only once, in your main component.
+  MessageBarManager.setCurrentMessageBarAlert(this.refs.alert);
+}
+
+componentWillUnmount() {
+  // Remove the alert located on this master page from te manager
+  MessageBarManager.removeCurrentMessageBarAlert();
+}
+```
+
+- 4. Display the Message Bar Alert on demand
 ```javascript
 // Simple show the alert by its reference
 this.refs.alert.showMessageBarAlert();
 
 // OR
 
-// Preferably use this method. In a future release a queuing system will be implemented
-MessageBarManager.showAlert(this.refs.alert);
+// Call this method after registering your MessageBar as the current alert
+// By calling this method the registered alert will be displayed
+// This is useful to show the alert from your current page or a child component
+MessageBarManager.showCurrentAlert();
 ```
 Please note, if you do not provide a `type`, the `info` one will be chosen for you.
 
@@ -122,6 +144,10 @@ You can customize the style of the Title, Message and Icon/Avatar.
   message="Hello, any suggestions?" // Message of the alert
   avatarUrl="<URL of your icon/avatar>" // Avatar/Icon URL of the alert
 
+  /* Number of Lines for Title and Message */
+  titleNumberOfLines={1}
+  messageNumberOfLines={0} // Unlimited number of lines
+
   /* Style for the text elements and the  */
   titleStyle={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}
   messageStyle={{ color: 'white', fontSize: 16 }}
@@ -161,6 +187,8 @@ message               | String   |                      | Message of the alert
 avatarUrl             | String   |                      | Avatar/Icon URL of the alert
 type                  | String   | info                 | Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable).
 duration              | Number   | 3000                 | Number of ms the alert is displayed  
+shouldHideAfterDelay  | Bool     | true                 | Tell the MessageBar wether it should hide after a delay defined in the `duration` property. If `false`, the MessageBar remain shown
+shouldHideOnTap       | Bool     | true                 | Tell the MessageBar wether it should hide or not when the user tap the alert. If `false`, the MessageBar will not hide, but the `onTapped` function is triggered, if defined. In addition, if `false`, the `onHide` function will not be triggered. The property `shouldHideAfterDelay` take precedence over `shouldHideOnTap`. That means if `shouldHideAfterDelay` is `false`, the value of `shouldHideOnTap` is not taken into account, since the MessageBar will not ever be hidden
 onTapped              | Function |                      | Callback function after alert is tapped
 onShow                | Function |                      | Callback function after alert is shown
 onHide                | Function |                      | Callback function after alert is hidden
@@ -177,6 +205,8 @@ viewRightOffset       | Number   | 0                    | Offset of the view fro
 viewTopInset          | Number   | 0                    | Padding Top of the view
 viewLeftInset         | Number   | 0                    | Padding Left of the view
 viewRightInset        | Number   | 0                    | Padding Right of the view
+titleNumberOfLines    | Number   | 1                    | Number of lines of the title. `0` means unlimited
+messageNumberOfLines  | Number   | 2                    | Number of lines of the message. `0` means unlimited
 avatarStyle           | Style    | { height: 40, width: 40, borderRadius: 20, alignSelf: 'center' } | Style of the icon/avatar
 titleStyle            | Style    | { color: 'white', fontSize: 18, fontWeight: 'bold' } | Style of the title
 messageStyle          | Style    | { color: 'white', fontSize: 16 } | Style of the message
@@ -184,7 +214,11 @@ messageStyle          | Style    | { color: 'white', fontSize: 16 } | Style of t
 
 ## TODOS
 
-- [ ] Add Queue System
+- [ ] Add Alert Queuing System
+- [ ] Add Bottom Position
+- [ ] Add Slide Animations (Slide from Top, Bottom, Left, Right)
+- [ ] Add pre-configured Animations (Fade-in, Elastic, etc.)
+- [ ] Add customizable Animation (inject your configuration)
 - [ ] Anything that can help to improve :) Thanks for contributions
 
 ---

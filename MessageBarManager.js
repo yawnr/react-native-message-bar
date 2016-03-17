@@ -17,6 +17,10 @@ module.exports = {
 		return this._currentMessageBarAlert;
 	},
 
+	removeCurrentMessageBarAlert: function() {
+		this._currentMessageBarAlert = null;
+	},
+
 
 	showAlert: function(alert) {
 		if (alert !== null) {
@@ -29,12 +33,21 @@ module.exports = {
 	},
 
 
+	showCurrentAlert: function(newState = null) {
+		if (this._currentMessageBarAlert !== null) {
+			if (newState != null) {
+				this._currentMessageBarAlert.setState(newState);
+			}
+
+			this._currentMessageBarAlert.showMessageBarAlert();
+		}
+	},
+
 	hideAlert: function() {
 	  if (this._currentMessageBarAlert !== null) {
 	    this._currentMessageBarAlert.hideMessageBarAlert();
 	  }
 	},
-
 
 	// TODO Implement Queue Alert system
 	// showCurrentAlert: function() {
