@@ -29,13 +29,12 @@ class CustomChildComponent extends Component {
     // the classic method showCurrentAlert(state) where state is the new state of the message bar alert
 
     // Declare the new state of the parent's message bar alert
-    var newState = {
+    MessageBarManager.showCurrentAlert({
       title: 'Alert triggered from child component',
       message: "You can show an alert which is located on its parent's page. You can then declare only one MessageBar. This is useful to fix absolute position in child component",
       avatarUrl: null,
-      type: 'success',
-    };
-    MessageBarManager.showCurrentAlert(newState);
+      alertType: 'success',
+    });
   }
 
 

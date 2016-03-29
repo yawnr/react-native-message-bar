@@ -30,27 +30,31 @@ class MessageBar extends Component {
     this.notifyAlertHiddenCallback = null;
     this.alertShown = false;
 
-    this.state = this.setStateByProps(props);
+    this.state = this.getStateByProps(props);
   }
 
   componentWillReceiveProps(nextProps) {
-    // Set the new state, this is triggered when the props of this MessageBar changed
-    this.setState(this.setStateByProps(nextProps));
-
-    // Apply the colors of the alert depending on its type
-    this._applyAlertStylesheet(nextProps.type);
+    this.setNewState(nextProps);
   }
 
-  setStateByProps(props) {
+  setNewState(state) {
+    // Set the new state, this is triggered when the props of this MessageBar changed
+    this.setState(this.getStateByProps(state));
+
+    // Apply the colors of the alert depending on its alertType
+    this._applyAlertStylesheet(state.alertType);
+  }
+
+  getStateByProps(props) {
     return {
       backgroundColor: '#007bff', // default value : blue
       strokeColor: '#006acd', // default value : blue
 
-      /* Cusomisation of the alert: Title, Message, Icon URL, Alert Type (error, success, warning, info), Duration for Alert keep shown */
+      /* Cusomisation of the alert: Title, Message, Icon URL, Alert alertType (error, success, warning, info), Duration for Alert keep shown */
       title: props.title,
       message: props.message,
       avatarUrl: props.avatarUrl,
-      type: props.type || 'info',
+      alertType: props.alertType || 'info',
       duration: props.duration || 3000,
 
       /* Hide setters */
@@ -215,17 +219,17 @@ class MessageBar extends Component {
 
 
   /*
-  * Change the background color and the line stroke color depending on the Type
-  * If the type is not recognized, the 'info' one (blue colors) is selected for you
+  * Change the background color and the line stroke color depending on the alertType
+  * If the alertType is not recognized, the 'info' one (blue colors) is selected for you
   */
-  _applyAlertStylesheet(type) {
-    // Set the Background color and the line stroke color of the alert depending on its type
-    // Set to blue-info if no type or if the type is not recognized
+  _applyAlertStylesheet(alertType) {
+    // Set the Background color and the line stroke color of the alert depending on its alertType
+    // Set to blue-info if no alertType or if the alertType is not recognized
 
     let backgroundColor;
     let strokeColor;
 
-    switch (type) {
+    switch (alertType) {
       case 'success':
         backgroundColor = this.state.stylesheetSuccess.backgroundColor;
         strokeColor = this.state.stylesheetSuccess.strokeColor;

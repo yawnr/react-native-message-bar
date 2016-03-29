@@ -1,4 +1,4 @@
-# react-native-message-bar
+# react-native-message-bar [react-native-message-bar](http://img.shields.io/npm/dm/react-native-message-bar.svg) [react-native-message-bar](https://img.shields.io/npm/v/react-native-message-bar.svg) [react-native-message-bar](https://img.shields.io/npm/l/react-native-message-bar.svg)
 A message bar notification component displayed at the top of the screen for React Native (Android and iOS) projects.
 
 ![Screenshot](http://s18.postimg.org/fz4t9ifkp/ezgif_942641418.gif)
@@ -14,6 +14,8 @@ A message bar notification component displayed at the top of the screen for Reac
 - [Customize View Layout](#customize-view-layout)
 - [Properties](#properties)
 - [TODOS](#todos)
+- [Apps using this library](#apps-using-this-library)
+- [License](#license)
 
 
 ## Features
@@ -46,16 +48,8 @@ var MessageBarManager = require('react-native-message-bar').MessageBarManager;
 ```javascript
 // Within your render function.
 // Include the MessageBar once within your top View element
-// Please provide, at least a `title` or a `message` and a `type` (otherwise `info` will be chosen by default)
-<MessageBarAlert ref="alert"
-  title="John Doe" // Title of the alert
-  message="Hello, any suggestions?" // Message of the alert
-  avatarUrl="<URL of your icon/avatar>" // Avatar/Icon URL of the alert
-  type="info" // Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable). Default is 'info'
-
-  // See Properties section for full customization
-  // Or check `index.ios.js` or `index.android.js` for a complete example
-/>
+// Make sure you add the MessageBar at the very bottom of your master component, then it will be displayed over all other components
+<MessageBarAlert ref="alert" />
 ```
 
 - 3. Register and Release your Message Bar as the current main alert
@@ -64,28 +58,29 @@ componentDidMount() {
   // Register the alert located on this master page
   // This MessageBar will be accessible from the current (same) component, and from its child component
   // The MessageBar is then declared only once, in your main component.
-  MessageBarManager.setCurrentMessageBarAlert(this.refs.alert);
+  MessageBarManager.registerMessageBar(this.refs.alert);
 }
 
 componentWillUnmount() {
   // Remove the alert located on this master page from te manager
-  MessageBarManager.removeCurrentMessageBarAlert();
+  MessageBarManager.unregisterMessageBar();
 }
 ```
 
 - 4. Display the Message Bar Alert on demand
 ```javascript
-// Simple show the alert by its reference
-this.refs.alert.showMessageBarAlert();
-
-// OR
-
 // Call this method after registering your MessageBar as the current alert
 // By calling this method the registered alert will be displayed
 // This is useful to show the alert from your current page or a child component
-MessageBarManager.showCurrentAlert();
+MessageBarManager.showCurrentAlert({
+  title: 'Your alert title here',
+  message: 'Your alert message here',
+  alertType: 'success',
+  // See Properties section for full customization
+  // Or check `index.ios.js` or `index.android.js` for a complete example
+});
 ```
-Please note, if you do not provide a `type`, the `info` one will be chosen for you.
+Please note, if you do not provide a `alertType`, the `info` one will be chosen for you.
 
 The normal `duration` of the notification is 3 seconds (3000 ms), you can override it. After this time, the notification is going to be hidden
 
@@ -95,11 +90,6 @@ See a full Example in `index.ios.js` or `index.android.js`.
 
 ## Hide the Message Bar Alert
 ```javascript
-// Simply hide the alert by its reference
-this.refs.alert.hideMessageBarAlert();
-
-// OR
-
 // You can force the current alert to be hidden through the Manager
 MessageBarManager.hideAlert();
 ```
@@ -117,65 +107,65 @@ The 4 pre-configured alert styles are:
 The `extra` alert type allows you to use another 5th type.
 
 ```javascript
-<MessageBarAlert ref="alert"
+MessageBarManager.showCurrentAlert({
   ...
 
-  type='info' // Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable). Default is 'info'
+  alertType: 'info', // Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable). Default is 'info'
 
   /* Customize the stylesheets and/or provide an additional one 'extra' */
-  stylesheetInfo = {{ backgroundColor : '#007bff', strokeColor : '#006acd' }} // Default are blue colors
-  stylesheetSuccess = {{ backgroundColor : 'darkgreen', strokeColor : '#b40000' }} // Default are Green colors
-  stylesheetWarning = {{ backgroundColor : '#ff9c00', strokeColor : '#f29400' }} // Default are orange colors
-  stylesheetError = {{ backgroundColor : '#ff3232', strokeColor : '#FF0000' }} // Default are red colors
-  stylesheetExtra = {{ backgroundColor : 'black', strokeColor : 'gray' }} // Default are blue colors, same as info
+  stylesheetInfo : {{ backgroundColor : '#007bff', strokeColor : '#006acd' }}, // Default are blue colors
+  stylesheetSuccess : {{ backgroundColor : 'darkgreen', strokeColor : '#b40000' }}, // Default are Green colors
+  stylesheetWarning : {{ backgroundColor : '#ff9c00', strokeColor : '#f29400' }}, // Default are orange colors
+  stylesheetError : {{ backgroundColor : '#ff3232', strokeColor : '#FF0000' }}, // Default are red colors
+  stylesheetExtra : {{ backgroundColor : 'black', strokeColor : 'gray' }}, // Default are blue colors, same as info
 
   ...
-/>
+});
 ```
 
 
 ## Customize Alert Content
 You can customize the style of the Title, Message and Icon/Avatar.
 ```javascript
-<MessageBarAlert ref="alert"
+MessageBarManager.showCurrentAlert({
   ...
 
-  title="John Doe" // Title of the alert
-  message="Hello, any suggestions?" // Message of the alert
-  avatarUrl="<URL of your icon/avatar>" // Avatar/Icon URL of the alert
+  title: "John Doe", // Title of the alert
+  message: "Hello, any suggestions?", // Message of the alert
+  avatarUrl: "<URL of your icon/avatar>", // Avatar/Icon URL of the alert
 
   /* Number of Lines for Title and Message */
-  titleNumberOfLines={1}
-  messageNumberOfLines={0} // Unlimited number of lines
+  titleNumberOfLines: 1,
+  messageNumberOfLines: 0, // Unlimited number of lines
 
   /* Style for the text elements and the  */
-  titleStyle={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}
-  messageStyle={{ color: 'white', fontSize: 16 }}
-  avatarStyle={{ height: 40, width: 40, borderRadius: 20 }}
+  titleStyle: {{ color: 'white', fontSize: 18, fontWeight: 'bold' }},
+  messageStyle: {{ color: 'white', fontSize: 16 }},
+  avatarStyle: {{ height: 40, width: 40, borderRadius: 20 }},
 
   ...
-/>
+});
 ```
 
 
 ## Customize View Layout
 You can customize the inset (padding) and the offset of the alert.
 ```javascript
-<MessageBarAlert ref="alert"
+MessageBarManager.showCurrentAlert({
   ...
 
   /* Offset of the View, useful if you have a navigation bar or if you want the alert be shown below another component instead of the top of the screen */
-  viewTopOffset = {0} // Default is 0
-  viewLeftOffset = {0} // Default is 0
-  viewRightOffset = {0} // Default is 0
+  viewTopOffset : 0, // Default is 0
+  viewLeftOffset : 0, // Default is 0
+  viewRightOffset : 0, // Default is 0
 
   /* Inset of the view, useful if you want to apply a padding at your alert content */
-  viewTopInset = {15} // Default is 0
-  viewLeftInset = {0} // Default is 0
-  viewRightInset = {0} // Default is 0
+  viewTopInset : 15, // Default is 0
+  viewLeftInset : 0, // Default is 0
+  viewRightInset : 0, // Default is 0
 
   ...
-/>
+});
 ```
 
 
@@ -185,18 +175,18 @@ Prop                  | Type     | Default              | Description
 title                 | String   |                      | Title of the alert
 message               | String   |                      | Message of the alert
 avatarUrl             | String   |                      | Avatar/Icon URL of the alert
-type                  | String   | info                 | Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable).
+alertType             | String   | info                 | Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable).
 duration              | Number   | 3000                 | Number of ms the alert is displayed  
-shouldHideAfterDelay  | Bool     | true                 | Tell the MessageBar wether it should hide after a delay defined in the `duration` property. If `false`, the MessageBar remain shown
-shouldHideOnTap       | Bool     | true                 | Tell the MessageBar wether it should hide or not when the user tap the alert. If `false`, the MessageBar will not hide, but the `onTapped` function is triggered, if defined. In addition, if `false`, the `onHide` function will not be triggered. The property `shouldHideAfterDelay` take precedence over `shouldHideOnTap`. That means if `shouldHideAfterDelay` is `false`, the value of `shouldHideOnTap` is not taken into account, since the MessageBar will not ever be hidden
+shouldHideAfterDelay  | Bool     | true                 | Tell the MessageBar whether or not it should hide after a delay defined in the `duration` property. If `false`, the MessageBar remain shown
+shouldHideOnTap       | Bool     | true                 | Tell the MessageBar whether or not it should hide or not when the user tap the alert. If `false`, the MessageBar will not hide, but the `onTapped` function is triggered, if defined. In addition, if `false`, the `onHide` function will not be triggered. The property `shouldHideAfterDelay` take precedence over `shouldHideOnTap`. That means if `shouldHideAfterDelay` is `false`, the value of `shouldHideOnTap` is not taken into account, since the MessageBar will not ever be hidden
 onTapped              | Function |                      | Callback function after alert is tapped
 onShow                | Function |                      | Callback function after alert is shown
 onHide                | Function |                      | Callback function after alert is hidden
-stylesheetInfo        | Object   | { backgroundColor: '#007bff', strokeColor: '#006acd' } | Background color and line stroke colors of the alert when type is equals to `info`
-stylesheetSuccess     | Object   | { backgroundColor: 'darkgreen', strokeColor: '#b40000' } | Background color and line stroke colors of the alert when type is equals to `success`
-stylesheetWarning     | Object   | { backgroundColor: '#ff9c00', strokeColor: '#f29400' } | Background color and line stroke colors of the alert when type is equals to `warning`
-stylesheetError       | Object   | { backgroundColor: '#ff3232', strokeColor: '#FF0000' } | Background color and line stroke colors of the alert when type is equals to `error`
-stylesheetExtra       | Object   | { backgroundColor: '#007bff', strokeColor: '#006acd' } | Background color and line stroke colors of the alert when type is equals to `extra`
+stylesheetInfo        | Object   | { backgroundColor: '#007bff', strokeColor: '#006acd' } | Background color and line stroke colors of the alert when alertType is equals to `info`
+stylesheetSuccess     | Object   | { backgroundColor: 'darkgreen', strokeColor: '#b40000' } | Background color and line stroke colors of the alert when alertType is equals to `success`
+stylesheetWarning     | Object   | { backgroundColor: '#ff9c00', strokeColor: '#f29400' } | Background color and line stroke colors of the alert when alertType is equals to `warning`
+stylesheetError       | Object   | { backgroundColor: '#ff3232', strokeColor: '#FF0000' } | Background color and line stroke colors of the alert when alertType is equals to `error`
+stylesheetExtra       | Object   | { backgroundColor: '#007bff', strokeColor: '#006acd' } | Background color and line stroke colors of the alert when alertType is equals to `extra`
 durationToShow        | Number   | 350                  | Duration of the animation to completely show the alert
 durationToHide        | Number   | 350                  | Duration of the animation to completely hide the alert
 viewTopOffset         | Number   | 0                    | Offset of the view from the top. That means the alert touch the top edge of the screen
@@ -213,7 +203,6 @@ messageStyle          | Style    | { color: 'white', fontSize: 16 } | Style of t
 
 
 ## TODOS
-
 - [ ] Add Alert Queuing System
 - [ ] Add Bottom Position
 - [ ] Add Slide Animations (Slide from Top, Bottom, Left, Right)
@@ -221,6 +210,16 @@ messageStyle          | Style    | { color: 'white', fontSize: 16 } | Style of t
 - [ ] Add customizable Animation (inject your configuration)
 - [ ] Anything that can help to improve :) Thanks for contributions
 
+
+## Apps using this library
+- Your App here...
+
+
 ---
 
-**MIT Licensed**
+## License
+`React-Native-Message-Bar` is released under MIT License. See `LICENSE` for details.
+
+>**Copyright &copy; 2016 KBLNY.**
+
+*Please provide attribution, it is greatly appreciated.*

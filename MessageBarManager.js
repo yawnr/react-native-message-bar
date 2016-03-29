@@ -10,15 +10,21 @@ module.exports = {
 	_messageAlerts: new Array(),
 
 	setCurrentMessageBarAlert: function(alert) {
-		this._currentMessageBarAlert = alert;
-	},
-
-	getCurrentMessageBarAlert: function() {
-		return this._currentMessageBarAlert;
+		console.warn('This method is deprecated, please use registerMessageBar instead.');
+		this.registerMessageBar(alert);
 	},
 
 	removeCurrentMessageBarAlert: function() {
-		this._currentMessageBarAlert = null;
+		console.warn('This method is deprecated, please use registerMessageBar instead.');
+		this.unregisterMessageBar();
+	},
+
+	registerMessageBar(messageBar) {
+		this._currentMessageBarAlert = messageBar;
+	},
+
+	unregisterMessageBar() {
+		this._currentMessageBarAlert = null;;
 	},
 
 
@@ -32,16 +38,36 @@ module.exports = {
 		}
 	},
 
-
 	showCurrentAlert: function(newState = null) {
 		if (this._currentMessageBarAlert !== null) {
 			if (newState != null) {
-				this._currentMessageBarAlert.setState(newState);
+				this._currentMessageBarAlert.setNewState(newState);
 			}
 
-			this._currentMessageBarAlert.showMessageBarAlert();
+			setTimeout(()=>{
+				this._currentMessageBarAlert.showMessageBarAlert();
+			}, 100);
 		}
 	},
+	// showCurrentAlert: function(newState = null) {
+	// 	if (this._currentMessageBarAlert !== null) {
+	// 		if (this._currentMessageBarAlert.isMessageBarShown()) {
+	// 			this._currentMessageBarAlert.notifyAlertHiddenCallback = () => {
+	// 				if (newState != null) {
+	// 					this._currentMessageBarAlert.setState(newState);
+	//
+	// 					this._currentMessageBarAlert.showMessageBarAlert();
+	// 				}
+	// 			}
+	// 		} else if (newState != null) {
+	// 			this._currentMessageBarAlert.setState(newState);
+	// 		}
+	//
+	// 		setTimeout(()=>{
+	// 			this._currentMessageBarAlert.showMessageBarAlert();
+	// 		}, 100);
+	// 	}
+	// },
 
 	hideAlert: function() {
 	  if (this._currentMessageBarAlert !== null) {
