@@ -22,6 +22,14 @@
     "notification",
     "status"
   ],
+  "files": [
+    "package.json",
+    "README.md",
+    "index.js",
+    "MessageBar.js",
+    "MessageBarManager.js",
+    "LICENSE"
+  ],
   "bugs": {
     "url": "https://github.com/KBLNY/react-native-message-bar/issues"
   },
