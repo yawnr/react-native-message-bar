@@ -29,6 +29,7 @@ class MessageBar extends Component {
     this.animatedValue = new Animated.Value(0);
     this.notifyAlertHiddenCallback = null;
     this.alertShown = false;
+    this.timeoutHide = null;
 
     this.state = this.getStateByProps(props);
   }
@@ -43,12 +44,17 @@ class MessageBar extends Component {
 
     // Apply the colors of the alert depending on its alertType
     this._applyAlertStylesheet(state.alertType);
+
+    // Override the opposition style position regarding the state position in order to have the alert sticks that position
+    this._changeOffsetByPosition(state.position);
   }
 
   getStateByProps(props) {
     return {
+      // Default values, will be overridden
       backgroundColor: '#007bff', // default value : blue
       strokeColor: '#006acd', // default value : blue
+      animationTypeTransform: 'SlideFromTop', // default value
 
       /* Cusomisation of the alert: Title, Message, Icon URL, Alert alertType (error, success, warning, info), Duration for Alert keep shown */
       title: props.title,
@@ -79,11 +85,13 @@ class MessageBar extends Component {
 
       /* Offset of the View, useful if you have a navigation bar or if you want the alert be shown below another component instead of the top of the screen */
       viewTopOffset: props.viewTopOffset || 0,
+      viewBottomOffset: props.viewBottomOffset || 0,
       viewLeftOffset: props.viewLeftOffset || 0,
       viewRightOffset: props.viewRightOffset || 0,
 
       /* Inset of the view, useful if you want to apply a padding at your alert content */
       viewTopInset: props.viewTopInset || 0,
+      viewBottomInset: props.viewBottomInset || 0,
       viewLeftInset: props.viewLeftInset || 0,
       viewRightInset: props.viewRightInset || 0,
 
@@ -96,6 +104,9 @@ class MessageBar extends Component {
       messageStyle: props.messageStyle || { color: 'white', fontSize: 16 },
       avatarStyle: props.avatarStyle || { height: 40, width: 40, borderRadius: 20 },
 
+      /* Position of the alert and Animation Type the alert is shown */
+      position: props.position || 'top',
+      animationType: props.animationType,
     };
   }
 
@@ -130,7 +141,7 @@ class MessageBar extends Component {
 
     // If the duration is null, do not hide the
     if (this.state.shouldHideAfterDelay) {
-      setTimeout(() => {
+      this.timeoutHide = setTimeout(() => {
         this.hideMessageBarAlert();
       }, this.state.duration);
     }
@@ -153,6 +164,8 @@ class MessageBar extends Component {
     if (!this.alertShown) {
       return;
     }
+
+    clearTimeout(this.timeoutHide);
 
     // Animate the alert to hide it to the top of the screen
     Animated.timing(this.animatedValue, {
@@ -260,17 +273,97 @@ class MessageBar extends Component {
 
 
   /*
+  * Change view<Position>Offset property depending on the state position
+  */
+  _changeOffsetByPosition(position) {
+    switch (position) {
+      case 'top':
+        this.setState({
+          viewBottomOffset: null
+        });
+        break;
+      case 'bottom':
+        this.setState({
+          viewTopOffset: null
+        });
+        break;
+      default:
+        this.setState({
+          viewBottomOffset: null
+        });
+        break;
+    }
+  }
+
+
+  /*
+  * Set the animation transformation depending on the chosen animationType, or depending on the state's position if animationType is not overridden
+  */
+  _apllyAnimationTypeTransformation() {
+    let position = this.state.position;
+    let animationType = this.state.animationType;
+
+    console.log(position, animationType);
+
+    if (animationType === undefined) {
+      if (position === 'bottom') {
+        animationType = 'SlideFromBottom';
+      } else {
+        // Top by default
+        animationType = 'SlideFromTop';
+      }
+    }
+
+    switch (animationType) {
+      case 'SlideFromTop':
+         var animationY = this.animatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [-windowHeight, 0]
+        });
+        this.animationTypeTransform = [{ translateY: animationY }];
+        break;
+      case 'SlideFromBottom':
+         var animationY = this.animatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [windowHeight, 0]
+        });
+        this.animationTypeTransform = [{ translateY: animationY }];
+        break;
+      case 'SlideFromLeft':
+         var animationX = this.animatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [-windowWidth, 0]
+        });
+        this.animationTypeTransform = [{ translateX: animationX }];
+        break;
+      case 'SlideFromRight':
+         var animationX = this.animatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [windowWidth, 0]
+        });
+        this.animationTypeTransform = [{ translateX: animationX }];
+        break;
+      default:
+         var animationY = this.animatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [-windowHeight, 0]
+        });
+        this.animationTypeTransform = [{ translateY: animationY }];
+        break;
+    }
+  }
+
+
+  /*
   * Alert Rendering Methods
   */
 
   render() {
-    let animation = this.animatedValue.interpolate({
-       inputRange: [0, 0.3, 1],
-       outputRange: [-windowHeight, -windowHeight/3, 0]
-     })
+    // Set the animation transformation depending on the chosen animationType, or depending on the state's position if animationType is not overridden
+    this._apllyAnimationTypeTransformation();
 
     return (
-      <Animated.View style={{ transform: [{ translateY: animation }], backgroundColor: this.state.backgroundColor, borderColor: this.state.strokeColor, borderBottomWidth: 1, position: 'absolute', top: this.state.viewTopOffset, left: this.state.viewLeftOffset, right: this.state.viewRightOffset, paddingTop: this.state.viewTopInset, paddingLeft: this.state.viewLeftInset, paddingRight: this.state.viewRightInset }}>
+      <Animated.View style={{ transform: this.animationTypeTransform, backgroundColor: this.state.backgroundColor, borderColor: this.state.strokeColor, borderBottomWidth: 1, position: 'absolute', top: this.state.viewTopOffset, bottom: this.state.viewBottomOffset, left: this.state.viewLeftOffset, right: this.state.viewRightOffset, paddingTop: this.state.viewTopInset, paddingBottom: this.state.viewBottomInset, paddingLeft: this.state.viewLeftInset, paddingRight: this.state.viewRightInset }}>
         <TouchableOpacity onPress={()=>{this._alertTapped()}} style={{ flex: 1 }}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', padding: 10 }} >
             { this.renderImage() }

@@ -12,6 +12,7 @@ A message bar notification component displayed at the top of the screen for Reac
 - [Customize Alert Type](#customize-alert-type)
 - [Customize Alert Content](#customize-alert-content)
 - [Customize View Layout](#customize-view-layout)
+- [Customize Position and Animation, Twitter Style!](#customize-position-and-animation-twitter-style)
 - [Properties](#properties)
 - [TODOS](#todos)
 - [Apps using this library](#apps-using-this-library)
@@ -20,11 +21,14 @@ A message bar notification component displayed at the top of the screen for Reac
 
 ## Features
 - Android and iOS capable
-- Animated alert with Title, Message and Icon
-- Auto-hide after x seconds (customizable)
-- Support hide on tap
+- Animated alert with Title, Message and Icon/Avatar
+- Top or Bottom display
+- 4 Slides Animation Types (Alert is shown from top, from bottom, from left or from right)
+- Auto-hide after x seconds (customizable and/or can be disabled)
+- Auto-hide current alert to display a newer one, if context requires to do so
+- Support hide on tap (can be disabled)
 - 4 pre-configured customizable styles + 1 extra
-- Customizable styles and animation
+- Customizable texts, styles, durations, positions and animation
 - Callbacks on alert show, hide and tap
 - Orientation supported
 - Children component support Show/Hide alert
@@ -40,7 +44,7 @@ $ npm install react-native-message-bar --save
 ## Basic Usage
 - 1. Import the `react-native-message-bar` package
 ```javascript
-var MessageBar = require('react-native-message-bar').MessageBar;
+var MessageBarAlert = require('react-native-message-bar').MessageBar;
 var MessageBarManager = require('react-native-message-bar').MessageBarManager;
 ```
 
@@ -72,9 +76,9 @@ componentWillUnmount() {
 // Call this method after registering your MessageBar as the current alert
 // By calling this method the registered alert will be displayed
 // This is useful to show the alert from your current page or a child component
-MessageBarManager.showCurrentAlert({
-  title: 'Your alert title here',
-  message: 'Your alert message here',
+MessageBarManager.showAlert({
+  title: 'Your alert title goes here',
+  message: 'Your alert message goes here',
   alertType: 'success',
   // See Properties section for full customization
   // Or check `index.ios.js` or `index.android.js` for a complete example
@@ -107,7 +111,7 @@ The 4 pre-configured alert styles are:
 The `extra` alert type allows you to use another 5th type.
 
 ```javascript
-MessageBarManager.showCurrentAlert({
+MessageBarManager.showAlert({
   ...
 
   alertType: 'info', // Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable). Default is 'info'
@@ -127,7 +131,7 @@ MessageBarManager.showCurrentAlert({
 ## Customize Alert Content
 You can customize the style of the Title, Message and Icon/Avatar.
 ```javascript
-MessageBarManager.showCurrentAlert({
+MessageBarManager.showAlert({
   ...
 
   title: "John Doe", // Title of the alert
@@ -148,10 +152,10 @@ MessageBarManager.showCurrentAlert({
 ```
 
 
-## Customize View Layout
+## Customize Message Bar Alert Layout
 You can customize the inset (padding) and the offset of the alert.
 ```javascript
-MessageBarManager.showCurrentAlert({
+MessageBarManager.showAlert({
   ...
 
   /* Offset of the View, useful if you have a navigation bar or if you want the alert be shown below another component instead of the top of the screen */
@@ -163,6 +167,22 @@ MessageBarManager.showCurrentAlert({
   viewTopInset : 15, // Default is 0
   viewLeftInset : 0, // Default is 0
   viewRightInset : 0, // Default is 0
+
+  ...
+});
+```
+
+
+## Customize Position and Animation, Twitter Style!
+You can choose the position (`top`or `bottom`) of the alert.
+You can choose the way the alert is shown (`SlideFromTop`, `SlideFromBottom`, `SlideFromLeft` or `SlideFromRight`).
+```javascript
+MessageBarManager.showAlert({
+  ...
+
+  /* Position of the alert and Animation Type the alert is shown */
+  position: 'bottom',
+  animationType: 'SlideFromLeft',
 
   ...
 });
@@ -189,10 +209,12 @@ stylesheetError       | Object   | { backgroundColor: '#ff3232', strokeColor: '#
 stylesheetExtra       | Object   | { backgroundColor: '#007bff', strokeColor: '#006acd' } | Background color and line stroke colors of the alert when alertType is equals to `extra`
 durationToShow        | Number   | 350                  | Duration of the animation to completely show the alert
 durationToHide        | Number   | 350                  | Duration of the animation to completely hide the alert
-viewTopOffset         | Number   | 0                    | Offset of the view from the top. That means the alert touch the top edge of the screen
+viewTopOffset         | Number   | 0                    | Offset of the view from the top. That means the alert touch the top edge of the screen.
+viewBottomOffset      | Number   | 0                    | Offset of the view from the bottom. That means the alert touch the bottom edge of the screen
 viewLeftOffset        | Number   | 0                    | Offset of the view from the left. That means the alert touch the left edge of the screen
 viewRightOffset       | Number   | 0                    | Offset of the view from the right. That means the alert touch the right edge of the screen
 viewTopInset          | Number   | 0                    | Padding Top of the view
+viewBottomInset       | Number   | 0                    | Padding Bottom of the view
 viewLeftInset         | Number   | 0                    | Padding Left of the view
 viewRightInset        | Number   | 0                    | Padding Right of the view
 titleNumberOfLines    | Number   | 1                    | Number of lines of the title. `0` means unlimited
@@ -200,13 +222,15 @@ messageNumberOfLines  | Number   | 2                    | Number of lines of the
 avatarStyle           | Style    | { height: 40, width: 40, borderRadius: 20, alignSelf: 'center' } | Style of the icon/avatar
 titleStyle            | Style    | { color: 'white', fontSize: 18, fontWeight: 'bold' } | Style of the title
 messageStyle          | Style    | { color: 'white', fontSize: 16 } | Style of the message
+position              | String   | top                  | Define the position of the alert, can be `top` or `right`
+animationType         | String   | SlideFromTop         | Define the way the alert is animated on the view, can be `SlideFromTop`, `SlideFromBottom`, `SlideFromLeft` or `SlideFromRight`. If no value is specified, the animation type is selected for you based on the `position`; `SlideFromTop` if `position` is equal to `top`, `SlideFromBottom` if `position` is equal to `bottom`. The alert will then be smoothly displayed
 
 
 ## TODOS
 - [ ] Add Alert Queuing System
-- [ ] Add Bottom Position
-- [ ] Add Slide Animations (Slide from Top, Bottom, Left, Right)
-- [ ] Add pre-configured Animations (Fade-in, Elastic, etc.)
+- [x] Add Bottom Position
+- [x] Add Slide Animations Type (Slide from Top, Bottom, Left, Right)
+- [ ] Add Other Animations Type (Fade-in, Elastic, etc.)
 - [ ] Add customizable Animation (inject your configuration)
 - [ ] Anything that can help to improve :) Thanks for contributions
 

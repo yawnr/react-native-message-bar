@@ -28,87 +28,37 @@ module.exports = {
 	},
 
 
-	showAlert: function(alert) {
-		if (alert !== null) {
-			this.hideAlert();
-
-			this.setCurrentMessageBarAlert(alert);
-
-			this._currentMessageBarAlert.showMessageBarAlert();
-		}
+	showCurrentAlert: function(newState = null) {
+		console.warn('This method is deprecated, please use showAlert instead.');
+		this.showAlert(newState);
 	},
 
-	showCurrentAlert: function(newState = null) {
-		if (this._currentMessageBarAlert !== null) {
+	showAlert: function(newState = null) {
+		// Hide the current alert
+		this.hideAlert();
+
+		// Get the current alert's duration to hide
+		var durationToHide = this._currentMessageBarAlert.state.durationToHide;
+
+		setTimeout(()=>{
+			// Show the new alert if there is a new state, otherwise
 			if (newState != null) {
 				this._currentMessageBarAlert.setNewState(newState);
-			}
 
-			setTimeout(()=>{
-				this._currentMessageBarAlert.showMessageBarAlert();
-			}, 100);
-		}
+				this._currentMessageBarAlert.notifyAlertHiddenCallback = null;
+
+				setTimeout(()=>{
+					this._currentMessageBarAlert.showMessageBarAlert();
+				}, 100);
+			}
+		}, durationToHide);
 	},
-	// showCurrentAlert: function(newState = null) {
-	// 	if (this._currentMessageBarAlert !== null) {
-	// 		if (this._currentMessageBarAlert.isMessageBarShown()) {
-	// 			this._currentMessageBarAlert.notifyAlertHiddenCallback = () => {
-	// 				if (newState != null) {
-	// 					this._currentMessageBarAlert.setState(newState);
-	//
-	// 					this._currentMessageBarAlert.showMessageBarAlert();
-	// 				}
-	// 			}
-	// 		} else if (newState != null) {
-	// 			this._currentMessageBarAlert.setState(newState);
-	// 		}
-	//
-	// 		setTimeout(()=>{
-	// 			this._currentMessageBarAlert.showMessageBarAlert();
-	// 		}, 100);
-	// 	}
-	// },
+
 
 	hideAlert: function() {
 	  if (this._currentMessageBarAlert !== null) {
 	    this._currentMessageBarAlert.hideMessageBarAlert();
 	  }
 	},
-
-	// TODO Implement Queue Alert system
-	// showCurrentAlert: function() {
-  //   if (this._currentMessageBarAlert !== null) {
-	// 	  this._currentMessageBarAlert.showMessageBarAlert();
-	// 	}
-	// },
-	//
-  //
-	//
-	//
-	// addAlert: function(alert){
-	// 	// Add the MessageBar alert to the queue
-	// 	this._messageAlerts.push(alert);
-	//
-	// 	this.showAlert();
-	// },
-	//
-	// showAlert: function() {
-	// 	if (this._currentMessageBarAlert === null) {
-	// 		var alertToShow = this._messageAlerts.shift();
-	//
-	// 		if (alertToShow) {
-	// 			alertToShow.notifyAlertHiddenCallback = ()=>{
-	// 				this._currentMessageBarAlert = null;
-	//
-	// 				this.showAlert();
-	// 			}
-	//
-	// 			this.setCurrentMessageBarAlert(alertToShow);
-	//
-	// 			this.showCurrentAlert();
-	// 		}
-	// 	}
-	// },
-
 
 }
