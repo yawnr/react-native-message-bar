@@ -62,7 +62,7 @@ componentDidMount() {
 }
 
 componentWillUnmount() {
-  // Remove the alert located on this master page from te manager
+  // Remove the alert located on this master page from the manager
   MessageBarManager.unregisterMessageBar();
 }
 ```
