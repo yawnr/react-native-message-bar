@@ -40,7 +40,7 @@ $ npm install react-native-message-bar --save
 ## Basic Usage
 - 1. Import the `react-native-message-bar` package
 ```javascript
-var MessageBar = require('react-native-message-bar').MessageBar;
+var MessageBarAlert = require('react-native-message-bar').MessageBar;
 var MessageBarManager = require('react-native-message-bar').MessageBarManager;
 ```
 
