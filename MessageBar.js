@@ -303,8 +303,6 @@ class MessageBar extends Component {
     let position = this.state.position;
     let animationType = this.state.animationType;
 
-    console.log(position, animationType);
-
     if (animationType === undefined) {
       if (position === 'bottom') {
         animationType = 'SlideFromBottom';

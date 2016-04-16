@@ -34,6 +34,10 @@ module.exports = {
 	},
 
 	showAlert: function(newState = null) {
+		if (this._currentMessageBarAlert === null) {
+			return;
+		}
+
 		// Hide the current alert
 		this.hideAlert();
 
