@@ -47,6 +47,9 @@ module.exports = {
 		setTimeout(()=>{
 			// Show the new alert if there is a new state, otherwise
 			if (newState != null) {
+		    // Clear current state
+		    this._currentMessageBarAlert.setNewState({});
+
 				this._currentMessageBarAlert.setNewState(newState);
 
 				this._currentMessageBarAlert.notifyAlertHiddenCallback = null;
