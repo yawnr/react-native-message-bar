@@ -205,8 +205,8 @@ class MessageBar extends Component {
     }
 
     // Execute the callback passed in parameter
-    if (this.props.onTapped) {
-      this.props.onTapped();
+    if (this.state.onTapped) {
+      this.state.onTapped();
     }
   }
 
@@ -215,8 +215,8 @@ class MessageBar extends Component {
   * Callback executed when alert is shown
   */
   _onShow() {
-    if (this.props.onShow) {
-      this.props.onShow();
+    if (this.state.onShow) {
+      this.state.onShow();
     }
   }
 
@@ -225,8 +225,8 @@ class MessageBar extends Component {
   * Callback executed when alert is hidden
   */
   _onHide() {
-    if (this.props.onHide) {
-      this.props.onHide();
+    if (this.state.onHide) {
+      this.state.onHide();
     }
   }
 
