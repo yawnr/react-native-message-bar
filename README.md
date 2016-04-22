@@ -137,7 +137,7 @@ MessageBarManager.showAlert({
 
   title: "John Doe", // Title of the alert
   message: "Hello, any suggestions?", // Message of the alert
-  avatar: {uri: "<URL of your icon/avatar>"}, // Avatar/Icon URL of the alert or enter require('LOCALPATH') for local image
+  avatarUrl: "<URL of your icon/avatar>", // Avatar/Icon URL of the alert
 
   /* Number of Lines for Title and Message */
   titleNumberOfLines: 1,
@@ -195,7 +195,7 @@ Prop                  | Type     | Default              | Description
 --------------------- | -------- | -------------------- | -----------
 title                 | String   |                      | Title of the alert
 message               | String   |                      | Message of the alert
-avatar                | String   |                      | Avatar/Icon source/URL of the alert
+avatarUrl             | String   |                      | Avatar/Icon URL of the alert
 alertType             | String   | info                 | Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable).
 duration              | Number   | 3000                 | Number of ms the alert is displayed  
 shouldHideAfterDelay  | Bool     | true                 | Tell the MessageBar whether or not it should hide after a delay defined in the `duration` property. If `false`, the MessageBar remain shown
