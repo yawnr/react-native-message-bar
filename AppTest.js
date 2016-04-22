@@ -48,10 +48,8 @@ class MessageBar extends Component {
 
     // Simple show the alert with the manager
     MessageBarManager.showAlert({
-      title: "This is a simple alert",
-      alertType: 'success',
-      position: 'bottom',
-      animationType: 'SlideFromLeft'
+      message: "This is a simple alert",
+      alertType: 'success'
     });
   }
 
@@ -61,7 +59,8 @@ class MessageBar extends Component {
     MessageBarManager.showAlert({
       message: "This is a simple alert with a message.",
       alertType: 'extra',
-      animationType: 'SlideFromLeft'
+      animationType: 'SlideFromLeft',
+      position: 'bottom',
     });
   }
 
@@ -69,7 +68,7 @@ class MessageBar extends Component {
     // Simple show the alert with the manager
     MessageBarManager.showAlert({
       title: "Caution !",
-      message: "This is a simple alert with a title",
+      message: "This is a simple alert with a title and a message",
       alertType: 'warning',
     });
   }
@@ -99,7 +98,7 @@ class MessageBar extends Component {
   showAlertFromThrowError() {
     try {
       // Do something risky
-      throw new Error("This is a custom error message from a throw new Error");
+      throw new Error("This is a custom error message.\rThis message is shown from a throw new Error.\rYou can use this technique to catch any error in try/catch block or in promises.");
     } catch(error) {
       this.handleError(error);
     }
@@ -109,7 +108,7 @@ class MessageBar extends Component {
     MessageBarManager.showAlert({
       title: "Error",
       message: error.message,
-      type: 'error',
+      alertType: 'error',
       messageNumberOfLines: 0,
     });
   }
@@ -140,8 +139,6 @@ class MessageBar extends Component {
   render() {
     return (
       <View style={styles.container}>
-
-        <MessageBarAlert ref="alert" />
 
       {
         // Otherwise, You can directly declare a MessageBar alert with its properties and display it by using its reference this.refs.alert.showMessageBarAlert()
@@ -225,6 +222,7 @@ class MessageBar extends Component {
           <Text style={[styles.button, {backgroundColor: 'darkgray'}]}>Hide Current Alert</Text>
         </TouchableOpacity>
 
+        <MessageBarAlert ref="alert" />
       </View>
     );
   }

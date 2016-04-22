@@ -1,7 +1,7 @@
 # react-native-message-bar ![npm version](http://img.shields.io/npm/dm/react-native-message-bar.svg) ![downloads](https://img.shields.io/npm/v/react-native-message-bar.svg) ![license](https://img.shields.io/npm/l/react-native-message-bar.svg)
 A message bar notification component displayed at the top of the screen for React Native (Android and iOS) projects.
 
-![Screenshot](http://s18.postimg.org/fz4t9ifkp/ezgif_942641418.gif)
+![Screenshot](http://s31.postimg.org/cxq6x5srf/Untitled.gif)
 
 
 ## Content
@@ -48,7 +48,8 @@ var MessageBarAlert = require('react-native-message-bar').MessageBar;
 var MessageBarManager = require('react-native-message-bar').MessageBarManager;
 ```
 
-- 2. Add the `MessageBarAlert` to your render method
+- 2. Add the `MessageBarAlert` to your render function
+Note: Add it at the very end of your render function, the alert will then be displayed over any component of the view
 ```javascript
 // Within your render function.
 // Include the MessageBar once within your top View element
