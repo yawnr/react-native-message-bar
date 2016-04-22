@@ -78,7 +78,7 @@ class MessageBar extends Component {
     MessageBarManager.showAlert({
       title: "John Doe",
       message: "Hello, how are you?",
-      avatarUrl: "https://image.freepik.com/free-icon/super-simple-avatar_318-1018.jpg",
+      avatar: "https://image.freepik.com/free-icon/super-simple-avatar_318-1018.jpg",
       alertType: 'info',
     });
   }
@@ -88,7 +88,7 @@ class MessageBar extends Component {
     MessageBarManager.showAlert({
       title: "This is an alert with a callback function",
       message: "Tap on the alert to execute the callback you passed in parameter",
-      avatarUrl: "http://www.icon100.com/up/4250/128/83-circle-error.png",
+      avatar: "http://www.icon100.com/up/4250/128/83-circle-error.png",
       alertType: 'error',
       duration: 5000,
       onTapped: this.customCallback.bind(this),
@@ -147,7 +147,7 @@ class MessageBar extends Component {
         //   /* Cusomisation of the alert: Title, Message, Icon URL, Alert Type (error, success, warning, info), Duration for Alert keep shown */
         //   title={this.state.alertTitle} // Title of the alert
         //   message={this.state.alertMessage} // Message of the alert
-        //   avatarUrl={this.state.alertIconUrl} // Avatar/Icon URL of the alert
+        //   avatar={this.state.alertIconUrl} // Avatar/Icon URL of the alert
         //   type={this.state.alertType} // Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable). Default is 'info'
         //   duration={this.state.alertDuration} // Number of ms the alert is displayed. Default is 3000 ms (3 seconds)
         //

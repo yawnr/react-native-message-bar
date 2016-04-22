@@ -32,7 +32,7 @@ class CustomChildComponent extends Component {
     MessageBarManager.showAlert({
       title: 'Alert triggered from child component',
       message: "You can show an alert which is located on its parent's page. You can then declare only one MessageBar. This is useful to fix absolute position in child component",
-      avatarUrl: null,
+      avatar: null,
       alertType: 'success',
     });
   }
