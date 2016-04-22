@@ -59,7 +59,7 @@ class MessageBar extends Component {
       /* Cusomisation of the alert: Title, Message, Icon URL, Alert alertType (error, success, warning, info), Duration for Alert keep shown */
       title: props.title,
       message: props.message,
-      avatarUrl: props.avatarUrl,
+      avatar: props.avatar,
       alertType: props.alertType || 'info',
       duration: props.duration || 3000,
 
@@ -376,9 +376,9 @@ class MessageBar extends Component {
   }
 
   renderImage() {
-    if (this.state.avatarUrl != null) {
+    if (this.state.avatar != null) {
       return (
-        <Image source={{ uri: this.state.avatarUrl }} style={this.state.avatarStyle} />
+        <Image source={this.state.avatar} style={this.state.avatarStyle} />
       );
     }
   }
