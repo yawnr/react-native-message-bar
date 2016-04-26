@@ -377,8 +377,18 @@ class MessageBar extends Component {
 
   renderImage() {
     if (this.state.avatar != null) {
+      var imageSource;
+      let uri = this.state.avatar;
+      if (!!(typeof uri === 'string' && uri.match(/^https?:/))) {
+        // this is a network file
+        imageSource = { uri: this.state.avatar }
+      } else {
+        // this is a local file : require('<path/to/my/local/image.extension>')
+        imageSource = this.state.avatar
+      }
+
       return (
-        <Image source={{ uri: this.state.avatar }} style={this.state.avatarStyle} />
+        <Image source={imageSource} style={this.state.avatarStyle} />
       );
     }
   }

@@ -88,7 +88,7 @@ class MessageBar extends Component {
     MessageBarManager.showAlert({
       title: "This is an alert with a callback function",
       message: "Tap on the alert to execute the callback you passed in parameter",
-      avatar: "http://www.icon100.com/up/4250/128/83-circle-error.png",
+      avatar: "http://www.icon100.com/up/4250/128/83-circle-error.png", // eg. for remote image file, use the following   avatar: require('./image.jpg'), 
       alertType: 'error',
       duration: 5000,
       onTapped: this.customCallback.bind(this),

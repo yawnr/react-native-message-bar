@@ -21,7 +21,7 @@ A message bar notification component displayed at the top of the screen for Reac
 
 ## Features
 - Android and iOS capable
-- Animated alert with Title, Message and Icon/Avatar
+- Animated alert with Title, Message and Icon/Avatar (from a local or a remote image file)
 - Top or Bottom display
 - 4 Slides Animation Types (Alert is shown from top, from bottom, from left or from right)
 - Auto-hide after x seconds (customizable and/or can be disabled)
@@ -137,7 +137,7 @@ MessageBarManager.showAlert({
 
   title: "John Doe", // Title of the alert
   message: "Hello, any suggestions?", // Message of the alert
-  avatar: "<URL/require('<path>') of your icon/avatar>", // Avatar/Icon URL of the alert or enter require('LOCALPATH') for local image
+  avatar: "<URL/require('<path>') of your icon/avatar>", // Avatar/Icon <URL> of the alert or enter require('LOCALPATH') for local image
 
   /* Number of Lines for Title and Message */
   titleNumberOfLines: 1,
@@ -195,7 +195,7 @@ Prop                  | Type     | Default              | Description
 --------------------- | -------- | -------------------- | -----------
 title                 | String   |                      | Title of the alert
 message               | String   |                      | Message of the alert
-avatar                | String   |                      | Avatar/Icon source/URL of the alert
+avatar                | String   |                      | Avatar/Icon source/URL of the alert. Use <URL> for a remote image file (eg `avatar: 'http://mywebsite.com/myimage.jpg'`) or use `avatar: require('<path/to/my/local/image.extension>')` for a remote image file
 alertType             | String   | info                 | Alert Type: you can select one of 'success', 'error', 'warning', 'error', or 'custom' (use custom if you use a 5th stylesheet, all are customizable).
 duration              | Number   | 3000                 | Number of ms the alert is displayed  
 shouldHideAfterDelay  | Bool     | true                 | Tell the MessageBar whether or not it should hide after a delay defined in the `duration` property. If `false`, the MessageBar remain shown
