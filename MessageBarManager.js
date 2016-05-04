@@ -3,19 +3,19 @@
  * Description: A manager to show/hide and handle a queue of alerts
  * https://github.com/KBLNY/react-native-message-bar
  */
-'use strict';
+"use strict";
 
 module.exports = {
 	_currentMessageBarAlert: null,
 	_messageAlerts: new Array(),
 
-	setCurrentMessageBarAlert: function(alert) {
-		console.warn('This method is deprecated, please use registerMessageBar instead.');
+	setCurrentMessageBarAlert(alert) {
+		Console.warn('This method is deprecated, please use registerMessageBar instead.');
 		this.registerMessageBar(alert);
 	},
 
-	removeCurrentMessageBarAlert: function() {
-		console.warn('This method is deprecated, please use registerMessageBar instead.');
+	removeCurrentMessageBarAlert() {
+		Console.warn('This method is deprecated, please use registerMessageBar instead.');
 		this.unregisterMessageBar();
 	},
 
@@ -24,16 +24,16 @@ module.exports = {
 	},
 
 	unregisterMessageBar() {
-		this._currentMessageBarAlert = null;;
+		this._currentMessageBarAlert = null;
 	},
 
 
-	showCurrentAlert: function(newState = null) {
-		console.warn('This method is deprecated, please use showAlert instead.');
+	showCurrentAlert(newState = null) {
+		Console.warn('This method is deprecated, please use showAlert instead.');
 		this.showAlert(newState);
 	},
 
-	showAlert: function(newState = null) {
+	showAlert(newState = null) {
 		if (this._currentMessageBarAlert === null) {
 			return;
 		}
@@ -44,17 +44,17 @@ module.exports = {
 		// Get the current alert's duration to hide
 		var durationToHide = this._currentMessageBarAlert.state.durationToHide;
 
-		setTimeout(()=>{
+		setTimeout(() => {
 			// Show the new alert if there is a new state, otherwise
 			if (newState != null) {
-		    // Clear current state
-		    this._currentMessageBarAlert.setNewState({});
+				// Clear current state
+				this._currentMessageBarAlert.setNewState({});
 
 				this._currentMessageBarAlert.setNewState(newState);
 
 				this._currentMessageBarAlert.notifyAlertHiddenCallback = null;
 
-				setTimeout(()=>{
+				setTimeout(() => {
 					this._currentMessageBarAlert.showMessageBarAlert();
 				}, 100);
 			}
@@ -68,4 +68,4 @@ module.exports = {
 	  }
 	},
 
-}
+};

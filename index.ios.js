@@ -3,10 +3,10 @@
  * Description: A Project to test the Message Bar Component
  * https://github.com/KBLNY/react-native-message-bar
  */
-'use strict';
+"use strict";
 
-const React = require('react-native');
+const React = require("react-native");
 const { AppRegistry, } = React;
-const AppTest = require('./AppTest');
+const AppTest = require("./AppTest");
 
 AppRegistry.registerComponent('MessageBar', () => AppTest);

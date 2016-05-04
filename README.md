@@ -1,4 +1,4 @@
-# react-native-message-bar ![npm version](http://img.shields.io/npm/dm/react-native-message-bar.svg) ![downloads](https://img.shields.io/npm/v/react-native-message-bar.svg) ![license](https://img.shields.io/npm/l/react-native-message-bar.svg)
+# react-native-message-bar ![npm version](http://img.shields.io/npm/dm/react-native-message-bar.svg) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/482dc013717642e3971f78b22f2a95fd)](https://www.codacy.com/app/ktgr45/react-native-message-bar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KBLNY/react-native-message-bar&amp;utm_campaign=Badge_Grade) ![downloads](https://img.shields.io/npm/v/react-native-message-bar.svg) ![license](https://img.shields.io/npm/l/react-native-message-bar.svg) 
 A message bar notification component displayed at the top of the screen for React Native (Android and iOS) projects.
 
 ![Screenshot](http://s31.postimg.org/cxq6x5srf/Untitled.gif)
