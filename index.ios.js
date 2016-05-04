@@ -9,4 +9,4 @@ const React = require("react-native");
 const { AppRegistry, } = React;
 const AppTest = require("./AppTest");
 
-AppRegistry.registerComponent('MessageBar', () => AppTest);
+AppRegistry.registerComponent("MessageBar", () => AppTest);

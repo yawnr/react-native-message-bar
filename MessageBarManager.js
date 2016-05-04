@@ -10,12 +10,12 @@ module.exports = {
 	_messageAlerts: new Array(),
 
 	setCurrentMessageBarAlert(alert) {
-		Console.warn('This method is deprecated, please use registerMessageBar instead.');
+		console.warn("This method is deprecated, please use registerMessageBar instead.");
 		this.registerMessageBar(alert);
 	},
 
 	removeCurrentMessageBarAlert() {
-		Console.warn('This method is deprecated, please use registerMessageBar instead.');
+		console.warn("This method is deprecated, please use registerMessageBar instead.");
 		this.unregisterMessageBar();
 	},
 
@@ -29,7 +29,7 @@ module.exports = {
 
 
 	showCurrentAlert(newState = null) {
-		Console.warn('This method is deprecated, please use showAlert instead.');
+		console.warn("This method is deprecated, please use showAlert instead.");
 		this.showAlert(newState);
 	},
 
@@ -62,10 +62,10 @@ module.exports = {
 	},
 
 
-	hideAlert: function() {
-	  if (this._currentMessageBarAlert !== null) {
-	    this._currentMessageBarAlert.hideMessageBarAlert();
-	  }
+	hideAlert() {
+		if (this._currentMessageBarAlert !== null) {
+			this._currentMessageBarAlert.hideMessageBarAlert();
+		}
 	},
 
 };
