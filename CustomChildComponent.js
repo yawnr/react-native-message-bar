@@ -7,9 +7,9 @@
 
 var MessageBarManager = require('./MessageBarManager.js');
 
-import React, {
+import React, {Component} from 'react'
+import {
   AppRegistry,
-  Component,
   StyleSheet,
   Text,
   View,
