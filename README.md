@@ -1,4 +1,10 @@
-# react-native-message-bar ![npm version](http://img.shields.io/npm/dm/react-native-message-bar.svg) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/482dc013717642e3971f78b22f2a95fd)](https://www.codacy.com/app/ktgr45/react-native-message-bar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KBLNY/react-native-message-bar&amp;utm_campaign=Badge_Grade) ![downloads](https://img.shields.io/npm/v/react-native-message-bar.svg) ![license](https://img.shields.io/npm/l/react-native-message-bar.svg) 
+# react-native-message-bar
+
+![npm version](http://img.shields.io/npm/dm/react-native-message-bar.svg)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/482dc013717642e3971f78b22f2a95fd)](https://www.codacy.com/app/ktgr45/react-native-message-bar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KBLNY/react-native-message-bar&amp;utm_campaign=Badge_Grade)
+![downloads](https://img.shields.io/npm/v/react-native-message-bar.svg) ![license](https://img.shields.io/npm/l/react-native-message-bar.svg)
+[![Platform](https://img.shields.io/badge/platform-ios%20%7C%20android-989898.svg?style=flat-square)](https://npmjs.org/package/react-native-message-bar "View this project on npm")
+
 A message bar notification component displayed at the top of the screen for React Native (Android and iOS) projects.
 
 ![Screenshot](http://s31.postimg.org/cxq6x5srf/Untitled.gif)
@@ -14,6 +20,7 @@ A message bar notification component displayed at the top of the screen for Reac
 - [Customize View Layout](#customize-view-layout)
 - [Customize Position and Animation, Twitter Style!](#customize-position-and-animation-twitter-style)
 - [Properties](#properties)
+- [Contributing](#contributing)
 - [TODOS](#todos)
 - [Apps using this library](#apps-using-this-library)
 - [License](#license)
@@ -225,6 +232,17 @@ titleStyle            | Style    | { color: 'white', fontSize: 18, fontWeight: '
 messageStyle          | Style    | { color: 'white', fontSize: 16 } | Style of the message
 position              | String   | top                  | Define the position of the alert, can be `top` or `right`
 animationType         | String   | SlideFromTop         | Define the way the alert is animated on the view, can be `SlideFromTop`, `SlideFromBottom`, `SlideFromLeft` or `SlideFromRight`. If no value is specified, the animation type is selected for you based on the `position`; `SlideFromTop` if `position` is equal to `top`, `SlideFromBottom` if `position` is equal to `bottom`. The alert will then be smoothly displayed
+
+
+## Contributing
+1. Fork this Repo first
+2. Clone your Repo
+3. Install dependencies by $ npm install
+4. Checkout a feature branch
+5. Feel free to add your features
+6. Make sure your features are fully tested
+7. Publish your local branch, Open a pull request
+8. Enjoy hacking <3
 
 
 ## TODOS
