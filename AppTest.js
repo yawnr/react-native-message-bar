@@ -9,9 +9,9 @@ var MessageBarAlert = require('./MessageBar.js');
 var MessageBarManager = require('./MessageBarManager.js');
 var CustomChildComponent = require('./CustomChildComponent.js');
 
-import React, {
+import React, {Component} from 'react'
+import {
   AppRegistry,
-  Component,
   StyleSheet,
   Text,
   View,
